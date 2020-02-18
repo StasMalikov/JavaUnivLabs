@@ -1,7 +1,11 @@
 package com.supermarket.enums;
 
 public enum ProdType {
-    MILK,
-    BREAD,
-    SAUSAGE
+    мясной_продукт,
+    молочный_продукт,
+    хлебобулочное_изделие,
+    овощи_фрукты,
+    бытовая_химия,
+    бакалея,
+    спиртное
 }

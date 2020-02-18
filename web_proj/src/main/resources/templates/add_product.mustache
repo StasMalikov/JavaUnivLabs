@@ -9,7 +9,78 @@
 
 <body>
 <div class='container-fluid'>
-    робит
+    <h4>Добавление нового продукта</h4>
+    <form method="post" action="/products/add">
+        <div class="form-row">
+
+            <div class="form-group col-md-4">
+                <label>Название продукта</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Цена</label>
+                <input type="number" class="form-control" name="price">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Единицы измерения</label>
+                <select class="form-control" name="weightType">
+                    {{#weightType}}
+                    <option>{{ . }}</option>
+                    {{/weightType}}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Скидка на товар</label>
+                <input type="number" name="discount" class="form-control" value="0" placeholder="В процентах от 0% до 99%">
+            </div>
+
+
+            <div class="form-group col-md-4">
+                <label>Категория товара</label>
+                <select class="form-control" name="prodType">
+                    {{#prodType}}
+                    <option>{{ . }}</option>
+                    {{/prodType}}
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Срок годности</label>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Дней</label>
+                        <input type="number" name="days" class="form-control" value="0">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label>Месяцев</label>
+                        <input type="number" name="months" class="form-control" value="0">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label>Лет</label>
+                        <input type="number" name="years" class="form-control" value="0">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label>Часов</label>
+                        <input type="number" name="hours" class="form-control" value="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Добавить товар</button>
+    </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
