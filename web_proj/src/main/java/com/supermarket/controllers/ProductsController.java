@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 @Controller
@@ -20,8 +17,14 @@ public class ProductsController {
     @Autowired
     ProductRepo productRepo;
 
+    @GetMapping("/products")
+    public String products(Map<String, Object> model) {
+        model.put("products", productRepo.findAll());
+        return "products";
+    }
+
     @GetMapping("/products/add")
-    public String addUserView(Map<String, Object> model) {
+    public String addProduct(Map<String, Object> model) {
         model.put("weightType", WeightType.values());
         model.put("prodType", ProdType.values());
         return "add_product";
@@ -40,6 +43,6 @@ public class ProductsController {
 
         productRepo.save(product);
         model.put("message", "Продукт успешно сохранён");
-        return "greeting";
+        return "add_product";
     }
 }

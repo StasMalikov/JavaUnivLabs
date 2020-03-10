@@ -1,5 +1,6 @@
 package com.supermarket.models;
 
+import com.supermarket.enums.Preferences;
 import com.supermarket.enums.ProdType;
 import com.supermarket.enums.WeightType;
 import javax.persistence.*;
@@ -16,16 +17,6 @@ public class Product {
      * название товара.
      */
     private String name;
-
-    /**
-     * скидка на товар.
-     */
-    private double discount;
-
-    /**
-     * цена на товар.
-     */
-    private double price;
 
     /**
      * срок годности.
@@ -46,19 +37,24 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProdType prodType;
 
+    /**
+     * Принадлежность продукта к предпочтениям.
+     */
+    @ElementCollection(targetClass = Preferences.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Preferences> prodProperties;
+
     @OneToMany(mappedBy = "productInfo", cascade = CascadeType.ALL)
     private Set<ProductUnit> productUnits;
 
     public Product() {}
 
-    public Product(String name, double discount, double price, Integer expirationDate,
-                   WeightType weightType, ProdType prodType) {
-        this.name = name;
-        this.discount = discount;
-        this.price = price;
-        this.expirationDate = expirationDate;
-        this.weightType = weightType;
-        this.prodType = prodType;
+    public Set<Preferences> getProdProperties() {
+        return prodProperties;
+    }
+
+    public void setProdProperties(Set<Preferences> prodProperties) {
+        this.prodProperties = prodProperties;
     }
 
     public Set<ProductUnit> getProductUnits() {
@@ -83,22 +79,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public Integer getExpirationDate() {

@@ -10,6 +10,13 @@
 <body>
 <div class='container-fluid'>
     <h4>Добавление нового продукта</h4>
+
+    {{#message}}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    {{/message}}
+
     <form method="post" action="/products/add">
         <div class="form-row">
 
@@ -26,10 +33,10 @@
             <div class="form-group col-md-4">
                 <label>Единицы измерения</label>
                 <select class="form-control" name="weightType">
-                    {{#weightType}}
-                    <option>{{ . }}</option>
-                    {{/weightType}}
-                </select>
+                {{#weightType}}
+                <option>{{ . }}</option>
+                {{/weightType}}
+            </select>
             </div>
         </div>
 

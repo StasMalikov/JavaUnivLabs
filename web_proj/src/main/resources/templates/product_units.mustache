@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Testing...</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class='container-fluid'>
+    <h4>Экземпляры товаров</h4>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Поиск названия</th>
+            <th scope="col">Название</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Дата изготовления</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>
+                <form method="post" action="/product_units/get_names">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <input class="form-control" name="findName" type="text" placeholder="Поиск названия">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="btn btn-primary" type="submit" name="submit" value="Найти">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="btn btn-warning" type="submit" name="submit" value="Сброс">
+                        </div>
+                    </div>
+                </form>
+            </td>
+
+            <form>
+                <td>
+                    <select class="form-control" name="name">
+                        {{#names}}
+                        <option>{{ . }}</option>
+                        {{/names}}
+                    </select>
+                </td>
+
+                <td><input class="form-control" name="quantity" type="number"></td>
+                <td><input class="form-control" name="productionDate" type="datetime-local"></td>
+                <td><button class="btn btn-primary" type="submit">Добавить</button></td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Дата изготовления</th>
+            <th scope="col">Размерность</th>
+            <th scope="col">Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--        {{#product_units}}-->
+        <!--        <tr>-->
+        <!--            <td>{{#name}}{{name}}{{/name}}</td>-->
+        <!--            <td>{{#prodType}}{{prodType}}{{/prodType}}</td>-->
+        <!--            <td>{{#weightType}}{{weightType}}{{/weightType}}</td>-->
+        <!--            <td>{{#expirationDate}}{{expirationDate}}{{/expirationDate}} дней</td>-->
+        <!--            <td>{{#discount}}{{discount}}{{/discount}}</td>-->
+        <!--            <td>{{#price}}{{price}}{{/price}} &#8381;</td>-->
+        <!--        </tr>-->
+        <!--        {{/product_units}}-->
+        </tbody>
+    </table>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
