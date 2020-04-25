@@ -1,9 +1,9 @@
-package com.supermarket.models;
+package com.supermarket.domain;
 
-import com.supermarket.enums.Preferences;
-import com.supermarket.enums.ProdType;
-import com.supermarket.enums.WeightType;
+import com.supermarket.domain.enums.ProdType;
+import com.supermarket.domain.enums.WeightType;
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,13 +23,11 @@ public class Product {
      */
     private Integer expirationDate;
 
-
     /**
      * тип измеряемости товара.
      */
     @Enumerated(EnumType.STRING)
     private WeightType weightType;
-
 
     /**
      * категория товара.
@@ -37,25 +35,17 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProdType prodType;
 
-    /**
-     * Принадлежность продукта к предпочтениям.
-     */
-    @ElementCollection(targetClass = Preferences.class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Preferences> prodProperties;
-
     @OneToMany(mappedBy = "productInfo", cascade = CascadeType.ALL)
     private Set<ProductUnit> productUnits;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "product_ingredient",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private List<Ingredient> ingredients;
+
     public Product() {}
-
-    public Set<Preferences> getProdProperties() {
-        return prodProperties;
-    }
-
-    public void setProdProperties(Set<Preferences> prodProperties) {
-        this.prodProperties = prodProperties;
-    }
 
     public Set<ProductUnit> getProductUnits() {
         return productUnits;

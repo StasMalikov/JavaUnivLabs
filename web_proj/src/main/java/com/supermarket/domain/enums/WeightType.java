@@ -1,4 +1,4 @@
-package com.supermarket.enums;
+package com.supermarket.domain.enums;
 
 public enum WeightType {
     шт,

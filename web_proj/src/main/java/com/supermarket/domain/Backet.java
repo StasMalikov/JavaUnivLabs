@@ -1,14 +1,25 @@
-package com.supermarket.models;
+package com.supermarket.domain;
 
-import com.supermarket.enums.BacketStatus;
+import com.supermarket.domain.enums.BacketStatus;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class Backet {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     /**
      * покупатель.
      */
-    private User customer;
+    private SupermarketUser customer;
 
     /**
      * покупки.
@@ -25,11 +36,11 @@ public class Backet {
      */
     private BacketStatus status;
 
-    public User getCustomer() {
+    public SupermarketUser getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(SupermarketUser customer) {
         this.customer = customer;
     }
 

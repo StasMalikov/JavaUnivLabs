@@ -1,6 +1,4 @@
-package com.supermarket.models;
-
-import com.supermarket.enums.ProdType;
+package com.supermarket.domain;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -16,7 +14,7 @@ public class ProductUnit {
      * продукт, от которого наследуется данный эеземпляр продукта.
      */
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="product_id", nullable=false)
     private Product productInfo;
 
     /**
@@ -30,14 +28,9 @@ public class ProductUnit {
     private double quantity;
 
     /**
-     * скидка на товар.
+     * цена товара.
      */
-    private double discount;
-
-    /**
-     * цена на товар.
-     */
-    private double price;
+    private Price price;
 
     public ProductUnit() { }
 
@@ -60,14 +53,6 @@ public class ProductUnit {
     public Calendar getProductionDate() {
         return productionDate;
     }
-
-    public double getDiscount() { return discount; }
-
-    public void setDiscount(double discount) { this.discount = discount; }
-
-    public double getPrice() { return price; }
-
-    public void setPrice(double price) { this.price = price; }
 
     public void setProductionDate(Calendar productionDate) {
         this.productionDate = productionDate;
