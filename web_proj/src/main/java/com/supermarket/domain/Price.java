@@ -1,25 +1,25 @@
 package com.supermarket.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Data
 @Entity
+@Table(name = "price")
 public class Price {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "price_id")
     private Long id;
 
-    /**
-     * скидка на товар.
-     */
     private double discount;
 
-    /**
-     * цена на товар.
-     */
     private double price;
+
+    @OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
+    private List<Product> productUnits;
 
 }

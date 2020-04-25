@@ -1,5 +1,6 @@
 package com.supermarket.controllers;
 
+import com.supermarket.domain.Product;
 import com.supermarket.domain.enums.ProdType;
 import com.supermarket.domain.enums.WeightType;
 import com.supermarket.repos.ProductRepo;

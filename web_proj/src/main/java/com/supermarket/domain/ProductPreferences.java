@@ -5,11 +5,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "user_preferences")
-public class UserPreferences {
+public class ProductPreferences {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,14 +18,14 @@ public class UserPreferences {
 
 
     @OneToOne(mappedBy = "preferences")
-    private SupermarketUser user;
+    private Product product;
 
     /**
-     * Предпочтения пользователя.
+     * Предпочтения относящиеся к товару.
      */
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_preference",
-            joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "product_preference",
+            joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "preference_id")
     )
     private List<Preference> preferences;

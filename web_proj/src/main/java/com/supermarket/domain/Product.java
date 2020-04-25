@@ -2,20 +2,22 @@ package com.supermarket.domain;
 
 import com.supermarket.domain.enums.ProdType;
 import com.supermarket.domain.enums.WeightType;
-import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.List;
+
+@Data
 @Entity
+@Table(name = "product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "product_id")
     private Long id;
 
-    /**
-     * название товара.
-     */
     private String name;
 
     /**
@@ -35,9 +37,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProdType prodType;
 
-    @OneToMany(mappedBy = "productInfo", cascade = CascadeType.ALL)
-    private Set<ProductUnit> productUnits;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "product_ingredient",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -45,53 +44,18 @@ public class Product {
     )
     private List<Ingredient> ingredients;
 
-    public Product() {}
+    private Calendar productionDate;
 
-    public Set<ProductUnit> getProductUnits() {
-        return productUnits;
-    }
+    /**
+     * количество товара.
+     */
+    private double quantity;
 
-    public void setProductUnits(Set<ProductUnit> productUnits) {
-        this.productUnits = productUnits;
-    }
+    @ManyToOne
+    @JoinColumn(name="price_id", nullable=false)
+    private Price price;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Integer expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public WeightType getWeightType() {
-        return weightType;
-    }
-
-    public void setWeightType(WeightType weightType) {
-        this.weightType = weightType;
-    }
-
-    public ProdType getProdType() {
-        return prodType;
-    }
-
-    public void setProdType(ProdType prodType) {
-        this.prodType = prodType;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "preferences_id", referencedColumnName = "id")
+    private ProductPreferences preferences;
 }
