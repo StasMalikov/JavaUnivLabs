@@ -2,6 +2,8 @@ package com.supermarket.domain;
 
 import com.supermarket.domain.preferences.Preference;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,10 +25,10 @@ public class ProductPreferences {
     /**
      * Предпочтения относящиеся к товару.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "product_preference",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "preference_id")
     )
-    private List<Preference> preferences;
+    private Set<Preference> preferences;
 }

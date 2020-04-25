@@ -2,9 +2,12 @@ package com.supermarket.domain;
 
 import com.supermarket.domain.preferences.Preference;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,10 +26,10 @@ public class UserPreferences {
     /**
      * Предпочтения пользователя.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_preference",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "preference_id")
     )
-    private List<Preference> preferences;
+    private Set<Preference> preferences;
 }

@@ -12,21 +12,21 @@ import java.util.Map;
 
 @Controller
 public class ProductsController {
-    @Autowired
-    ProductRepo productRepo;
-
-    @GetMapping("/products")
-    public String products(Map<String, Object> model) {
-        model.put("products", productRepo.findAll());
-        return "products";
-    }
-
-    @GetMapping("/products/add")
-    public String addProduct(Map<String, Object> model) {
-        model.put("weightType", WeightType.values());
-        model.put("prodType", ProdType.values());
-        return "add_product";
-    }
+//    @Autowired
+//    ProductRepo productRepo;
+//
+//    @GetMapping("/products")
+//    public String products(Map<String, Object> model) {
+//        model.put("products", productRepo.findAll());
+//        return "products";
+//    }
+//
+//    @GetMapping("/products/add")
+//    public String addProduct(Map<String, Object> model) {
+//        model.put("weightType", WeightType.values());
+//        model.put("prodType", ProdType.values());
+//        return "add_product";
+//    }
 
 //    @PostMapping("/products/add")
 //    public String greeting(@RequestParam String name, @RequestParam double price,

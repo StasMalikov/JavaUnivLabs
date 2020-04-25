@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 @Data
 @Entity
-public class AlcoholReference extends Preference {
+public class AlcoholPreference extends Preference {
 
     /**
      * градус.

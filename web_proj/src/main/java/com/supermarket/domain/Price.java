@@ -1,6 +1,8 @@
 package com.supermarket.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,6 +22,6 @@ public class Price {
     private double price;
 
     @OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
-    private List<Product> productUnits;
+    private List<Product> products;
 
 }
