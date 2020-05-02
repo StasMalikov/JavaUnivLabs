@@ -24,4 +24,11 @@ public class Price {
     @OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
     private List<Product> products;
 
+
+    public Price(double discount, double price) {
+        this.discount = discount;
+        this.price = price;
+    }
+
+    public Price(){}
 }

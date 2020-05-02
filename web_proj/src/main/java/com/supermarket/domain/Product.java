@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -17,9 +18,9 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -66,4 +67,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductBasket> productBaskets;
 
+    public Product() {
+        id = UUID.randomUUID().toString();
+    }
 }
