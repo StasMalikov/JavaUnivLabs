@@ -1,7 +1,6 @@
 package com.supermarket.domain;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,9 +15,20 @@ public class Ingredient {
     private Long id;
 
     private String name;
+
+    /**
+     * calories per 100 grams.
+     */
     private Integer calories;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
+
+    public Ingredient() {}
+
+    public Ingredient(String name, Integer calories) {
+        this.name = name;
+        this.calories = calories;
+    }
 
 }

@@ -8,4 +8,10 @@ import javax.persistence.Entity;
 @Entity
 public class PropertyPreference extends Preference {
     private String property;
+
+    public PropertyPreference(){}
+
+    public PropertyPreference(String property) {
+        this.property = property;
+    }
 }

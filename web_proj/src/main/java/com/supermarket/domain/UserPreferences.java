@@ -2,11 +2,7 @@ package com.supermarket.domain;
 
 import com.supermarket.domain.preferences.Preference;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity

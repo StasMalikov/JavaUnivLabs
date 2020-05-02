@@ -17,4 +17,11 @@ public class AlcoholPreference extends Preference {
      * количество.
      */
     private double maxCount;
+
+    public AlcoholPreference() {}
+
+    public AlcoholPreference(double maxLevel, double maxCount) {
+        this.maxCount = maxCount;
+        this.maxLevel = maxLevel;
+    }
 }
