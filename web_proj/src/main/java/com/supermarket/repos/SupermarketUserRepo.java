@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupermarketUserRepo extends JpaRepository<SupermarketUser, Long> {
+    SupermarketUser findByUsername(String username);
 }
