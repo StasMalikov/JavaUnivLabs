@@ -24,7 +24,7 @@ public class Product {
     private String name;
 
     /**
-     * срок годности.
+     * срок годности в часах.
      */
     private Integer expirationDate;
 
@@ -68,5 +68,32 @@ public class Product {
 
     public Product() {
         id = UUID.randomUUID().toString();
+    }
+
+    public Product(String name, double quantity, Integer expirationDate, Calendar productionDate,
+                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients, Price price) {
+        id = UUID.randomUUID().toString();
+        this.name = name;
+        this.expirationDate = expirationDate;
+        this.productionDate = productionDate;
+        this.weightType = weightType;
+        this.prodType = prodType;
+        this.ingredients = ingredients;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product(String name, double quantity, Integer expirationDate, Calendar productionDate,
+                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients, Price price, ProductPreferences preferences) {
+        id = UUID.randomUUID().toString();
+        this.name = name;
+        this.expirationDate = expirationDate;
+        this.productionDate = productionDate;
+        this.weightType = weightType;
+        this.prodType = prodType;
+        this.ingredients = ingredients;
+        this.price = price;
+        this.preferences = preferences;
+        this.quantity = quantity;
     }
 }

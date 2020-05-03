@@ -42,6 +42,20 @@ public class SupermarketUser implements UserDetails {
     private Set<Role> roles;
 
     @Override
+    public String toString() {
+        return "SupermarketUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", birthday=" + birthday +
+                ", active=" + active +
+                ", preferences=" + preferences +
+                ", baskets=" + baskets +
+                ", roles=" + roles +
+                '}';
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }

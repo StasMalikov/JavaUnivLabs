@@ -3,19 +3,91 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Testing...</title>
+    <title>Магазин продуктов</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
 <div class='container-fluid'>
 
-    <h1>Main page</h1>
-    <ul>
-        <li><a href="/products/add">Добавить продукт</a></li>
-        <li><a href="/products">Продукты</a></li>
-        <li><a href="/product_units">Экземпляры продуктов</a></li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="/">Магазин продуктов</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+
+            <form class="form-inline">
+                <a class="btn btn-outline-light my-2 my-sm-0" href="/login" type="button">Вход</a>
+            </form>
+            &nbsp;
+            <form class="form-inline">
+                <a class="btn btn-outline-light my-2 my-sm-0" href="/registration" type="button">Регистрация</a>
+            </form>
+            &nbsp;
+            <form action="/logout" method="post" class="form-inline">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                <input type="submit" class="btn btn-outline-light my-2 my-sm-0" value="Выйти"/>
+            </form>
+        </div>
+    </nav>
+    <!-- body  -->
+<!--    <form action="/test" method="post">-->
+<!--        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />-->
+<!--        <button style="color: black" class="btn btn-outline-light my-2 my-sm-0" type="submit">Test</button>-->
+<!--    </form>-->
+
+    <h2 align="center">Каталог товаров</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Катерория</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Ингредиенты</th>
+            <th scope="col">Цена</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {{#products}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{prodType.russianValue}}</td>
+            <td>{{quantity}} {{weightType.russianValue}}</td>
+            <td>
+                <select class="custom-select">
+                    {{#ingredients}}
+                    <option>{{name}}</option>
+                    {{/ingredients}}
+
+                </select>
+            </td>
+            <td>{{price.price}}</td>
+            <td><button type="button" class="btn btn-success">В корзину</button></td>
+        </tr>
+        {{/products}}
+
+        </tbody>
+    </table>
+
+    <!-- body end -->
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -11,7 +11,7 @@
 <div class='container-fluid'>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">Магазин продуктов</a>
+        <a class="navbar-brand" href="/">Магазин продуктов</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,15 +33,43 @@
             </ul>
 
             <form class="form-inline">
-                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Вход</button>
+                <a class="btn btn-outline-light my-2 my-sm-0" href="/login" type="button">Вход</a>
             </form>
             &nbsp;
             <form class="form-inline">
-                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Регистрация</button>
+                <a class="btn btn-outline-light my-2 my-sm-0" href="/registration" type="button">Регистрация</a>
             </form>
         </div>
     </nav>
     <!-- body  -->
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <br>
+            <br>
+
+            <h3 align="center">Регистрация</h3>
+            <form action="/registration" method="post">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                {{#message}}
+                <div class="alert alert-primary" role="alert">
+                    {{message}}
+                </div>
+                {{/message}}
+                <div class="form-group">
+                    <label>Логин</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="form-group">
+                    <label >Пароль</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <!-- body end -->
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
