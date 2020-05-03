@@ -96,6 +96,13 @@ public class DbInitializer implements CommandLineRunner {
         user.setRoles(Collections.singleton(Role.USER));
         supermarketUserRepo.save(user);
 
+        SupermarketUser user2 = new SupermarketUser();
+        user2.setUsername("u");
+        user2.setPassword("u");
+        user2.setActive(true);
+        user2.setRoles(Collections.singleton(Role.USER));
+        supermarketUserRepo.save(user2);
+
         SupermarketUser admin = new SupermarketUser();
         admin.setUsername("admin");
         admin.setPassword("admin");

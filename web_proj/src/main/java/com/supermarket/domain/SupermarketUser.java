@@ -1,5 +1,6 @@
 package com.supermarket.domain;
 
+import com.supermarket.domain.enums.BasketStatus;
 import com.supermarket.domain.enums.Role;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -33,13 +34,25 @@ public class SupermarketUser implements UserDetails {
     private UserPreferences preferences;
 
     @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Basket> baskets;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public Basket getReservedBasket() {
+        for(Basket b: baskets){
+            if(b.getStatus() == BasketStatus.RESERVED)
+                return b;
+        }
+        return null;
+    }
+
+    public void addBasket(Basket basket){
+        baskets.add(basket);
+    }
 
     @Override
     public String toString() {
@@ -79,6 +92,5 @@ public class SupermarketUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
-
 
 }

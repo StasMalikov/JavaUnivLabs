@@ -14,7 +14,7 @@ public class ProductBasket {
     @Column(name = "id")
     private Long id;
 
-    private int count;
+    private double count;
 
     @ManyToOne
     @JoinColumn(name="product_id", nullable=false)
@@ -23,4 +23,12 @@ public class ProductBasket {
     @ManyToOne
     @JoinColumn(name="basket_id", nullable=false)
     private Basket basket;
+
+    public ProductBasket(){}
+
+    public ProductBasket(Product product, double count, Basket basket){
+        this.product = product;
+        this.count = count;
+        this.basket = basket;
+    }
 }

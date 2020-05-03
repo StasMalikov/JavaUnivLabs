@@ -1,8 +1,9 @@
 package com.supermarket.domain;
 
-import com.supermarket.domain.enums.BacketStatus;
+import com.supermarket.domain.enums.BasketStatus;
 import lombok.Data;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,31 @@ public class Basket {
     @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private List<ProductBasket> productBaskets;
 
+    public boolean haveProduct(String productId){
+        for(ProductBasket pb : productBaskets){
+            if (pb.getProduct().getId().equals(productId))
+                return true;
+        }
+        return false;
+    }
+
     private Date purchasesDate;
 
-    private BacketStatus status;
+    private BasketStatus status;
+
+    public Basket(){
+        productBaskets = new ArrayList<>();
+        status = BasketStatus.RESERVED;
+    }
+
+    public Basket(SupermarketUser customer){
+        this.customer = customer;
+        productBaskets = new ArrayList<>();
+        status = BasketStatus.RESERVED;
+    }
+
+    public void addProduct(Product product){
+        productBaskets.add(new ProductBasket(product, 1, this));
+    }
+
 }

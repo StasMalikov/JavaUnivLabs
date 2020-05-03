@@ -1,7 +1,7 @@
 package com.supermarket.domain.enums;
 
-public enum BacketStatus {
+public enum BasketStatus {
     PAYED,
-    RESERVERD,
+    RESERVED,
     CANCELED
 }

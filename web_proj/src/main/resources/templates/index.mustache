@@ -28,7 +28,22 @@
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="#">Корзина</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Личный кабинет
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <form action="/logout" method="post" class="form-inline">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                            <input type="submit" class="dropdown-item" value="Выйти"/>
+                        </form>
+                    </div>
                 </li>
             </ul>
 
@@ -39,11 +54,6 @@
             <form class="form-inline">
                 <a class="btn btn-outline-light my-2 my-sm-0" href="/registration" type="button">Регистрация</a>
             </form>
-            &nbsp;
-            <form action="/logout" method="post" class="form-inline">
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <input type="submit" class="btn btn-outline-light my-2 my-sm-0" value="Выйти"/>
-            </form>
         </div>
     </nav>
     <!-- body  -->
@@ -53,6 +63,19 @@
 <!--    </form>-->
 
     <h2 align="center">Каталог товаров</h2>
+
+    {{#message1}}
+    <div class="alert alert-success" role="alert">
+       Продукт <a class="alert-link">{{message1}}</a> успешно добавлен в <a href="#" class="alert-link">корзину</a>!
+    </div>
+    {{/message1}}
+
+    {{#message2}}
+    <div class="alert alert-success" role="alert">
+        Продукт <a class="alert-link">{{message2}}</a> уже добавлен в <a href="#" class="alert-link">корзину</a>!
+    </div>
+    {{/message2}}
+
     <table class="table">
         <thead>
         <tr>
@@ -68,6 +91,9 @@
 
         {{#products}}
         <tr>
+            <form action="/basket/add" method="post" class="form-inline">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                <input type="hidden" name="product_id" value="{{id}}" />
             <td>{{name}}</td>
             <td>{{prodType.russianValue}}</td>
             <td>{{quantity}} {{weightType.russianValue}}</td>
@@ -80,7 +106,8 @@
                 </select>
             </td>
             <td>{{price.price}}</td>
-            <td><button type="button" class="btn btn-success">В корзину</button></td>
+            <td><button type="submit" class="btn btn-success">В корзину</button></td>
+            </form>
         </tr>
         {{/products}}
 
