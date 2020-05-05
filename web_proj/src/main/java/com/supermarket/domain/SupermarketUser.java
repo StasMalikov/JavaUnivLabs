@@ -42,18 +42,6 @@ public class SupermarketUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public Basket getReservedBasket() {
-        for(Basket b: baskets){
-            if(b.getStatus() == BasketStatus.RESERVED)
-                return b;
-        }
-        return null;
-    }
-
-    public void addBasket(Basket basket){
-        baskets.add(basket);
-    }
-
     @Override
     public String toString() {
         return "SupermarketUser{" +

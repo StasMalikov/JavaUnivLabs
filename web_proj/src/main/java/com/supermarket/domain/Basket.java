@@ -23,14 +23,6 @@ public class Basket {
     @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private List<ProductBasket> productBaskets;
 
-    public boolean haveProduct(String productId){
-        for(ProductBasket pb : productBaskets){
-            if (pb.getProduct().getId().equals(productId))
-                return true;
-        }
-        return false;
-    }
-
     private Date purchasesDate;
 
     private BasketStatus status;
@@ -44,28 +36,6 @@ public class Basket {
         this.customer = customer;
         productBaskets = new ArrayList<>();
         status = BasketStatus.RESERVED;
-    }
-
-    public void addProduct(ProductBasket product){
-        productBaskets.add(product);
-    }
-
-    public void deleteProductBasket(ProductBasket productBasket){
-        for(ProductBasket pb : productBaskets){
-            if(pb.getId().equals(productBasket.getId())){
-                productBaskets.remove(pb);
-                break;
-            }
-        }
-    }
-
-    public void updateProductBasket(ProductBasket product){
-        for(ProductBasket pb : productBaskets){
-            if(pb.getId().equals(product.getId())){
-                pb.setCount(product.getCount());
-                break;
-            }
-        }
     }
 
     public Long getId() {

@@ -4,10 +4,11 @@ import com.supermarket.domain.Basket;
 import com.supermarket.domain.Product;
 import com.supermarket.domain.ProductBasket;
 import com.supermarket.domain.SupermarketUser;
+import com.supermarket.domain.enums.BasketStatus;
 import com.supermarket.repos.BasketRepo;
-import com.supermarket.repos.ProductBasketRepo;
 import com.supermarket.repos.ProductRepo;
 import com.supermarket.repos.SupermarketUserRepo;
+import com.supermarket.services.ProductBasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,36 +36,25 @@ public class BasketController {
     SupermarketUserRepo supermarketUserRepo;
 
     @Autowired
-    private ProductBasketRepo productBasketRepo;
+    private ProductBasketService productBasketService;
 
     @PostMapping("/add")
     public String add(@AuthenticationPrincipal SupermarketUser user, @RequestParam String product_id, Map<String, Object> model) {
 
         Product product  = productRepo.findById(product_id).get();
-        Basket basket = user.getReservedBasket();
+        Basket basket = basketRepo.findByCustomerAndStatus(user, BasketStatus.RESERVED);
         if (basket == null) {
 
-            basket =  new Basket(user);
-            ProductBasket pb = new ProductBasket(product,1,basket);
-            basket.addProduct(pb);
-            pb.setBasket(basket);
-            user.addBasket(basket);
-
+            basket = basketRepo.save(new Basket(user));
+            productBasketService.addProductBasket(product,1,basket);
             model.put("message1", product.getName());
-            productBasketRepo.save(pb);
-            basketRepo.save(basket);
-            supermarketUserRepo.save(user);
+
         } else {
-            if(basket.haveProduct(product.getId())) {
+            if(productBasketService.productBasketInBasket(product, basket)) {
                 model.put("message2", product.getName());
             }else {
-                ProductBasket pb = new ProductBasket(product,1,basket);
-                basket.addProduct(pb);
-                pb.setBasket(basket);
-
+                productBasketService.addProductBasket(product,1,basket);
                 model.put("message1", product.getName());
-                productBasketRepo.save(pb);
-                basketRepo.save(basket);
             }
         }
         model.put("products", productRepo.findAll());
@@ -73,11 +63,11 @@ public class BasketController {
 
     @GetMapping("/")
     public String getReserved(@AuthenticationPrincipal SupermarketUser user, Map<String, Object> model) {
-        Basket basket = user.getReservedBasket();
+        Basket basket =  basketRepo.findByCustomerAndStatus(user, BasketStatus.RESERVED);
         if (basket == null) {
             model.put("message1", ".");
         } else {
-            List<ProductBasket> list = basket.getProductBaskets();
+            List<ProductBasket> list = productBasketService.getProductBaskets(basket);
             if (list.size() == 0) {
                 model.put("message1", ".");
             }else {
@@ -91,21 +81,15 @@ public class BasketController {
     public String update(@AuthenticationPrincipal SupermarketUser user, @RequestParam String productBasket_id,
                          @RequestParam String submit, @RequestParam double count, Map<String, Object> model) {
 
-        Basket basket = user.getReservedBasket();
-        ProductBasket pb = productBasketRepo.findById(productBasket_id).get();
+        Basket basket =  basketRepo.findByCustomerAndStatus(user, BasketStatus.RESERVED);
+        ProductBasket pb = productBasketService.findById(productBasket_id);
         if (submit.equals("Удалить")){
-            basket.deleteProductBasket(pb);
-            productBasketRepo.delete(pb);
-            basketRepo.save(basket);
-
+            productBasketService.deleteProductBasket(pb);
         } else {
-            pb.setCount(count);
-            basket.updateProductBasket(pb);
-            productBasketRepo.save(pb);
-            basketRepo.save(basket);
+            productBasketService.updateCountProductBasket(pb, count);
         }
 
-        List<ProductBasket> list = basket.getProductBaskets();
+        List<ProductBasket> list = productBasketService.getProductBaskets(basket);
         if (list.size() == 0) {
             model.put("message1", ".");
         }else {
