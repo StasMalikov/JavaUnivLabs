@@ -5,7 +5,6 @@ import com.supermarket.domain.enums.Role;
 import com.supermarket.repos.ProductRepo;
 import com.supermarket.repos.SupermarketUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +14,7 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+
     @Autowired
     ProductRepo productRepo;
 
@@ -24,13 +24,6 @@ public class MainController {
     @GetMapping("/")
     public String index(Map<String, Object> model) {
         model.put("products", productRepo.findAll());
-        return "index";
-    }
-
-
-    @PostMapping("/test")
-    public String index(@AuthenticationPrincipal SupermarketUser user, Map<String, Object> model) {
-        int i = 0;
         return "index";
     }
 
