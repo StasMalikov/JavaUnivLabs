@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "basket")
 public class Basket {
 
@@ -47,8 +46,65 @@ public class Basket {
         status = BasketStatus.RESERVED;
     }
 
-    public void addProduct(Product product){
-        productBaskets.add(new ProductBasket(product, 1, this));
+    public void addProduct(ProductBasket product){
+        productBaskets.add(product);
     }
 
+    public void deleteProductBasket(ProductBasket productBasket){
+        for(ProductBasket pb : productBaskets){
+            if(pb.getId().equals(productBasket.getId())){
+                productBaskets.remove(pb);
+                break;
+            }
+        }
+    }
+
+    public void updateProductBasket(ProductBasket product){
+        for(ProductBasket pb : productBaskets){
+            if(pb.getId().equals(product.getId())){
+                pb.setCount(product.getCount());
+                break;
+            }
+        }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SupermarketUser getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(SupermarketUser customer) {
+        this.customer = customer;
+    }
+
+    public List<ProductBasket> getProductBaskets() {
+        return productBaskets;
+    }
+
+    public void setProductBaskets(List<ProductBasket> productBaskets) {
+        this.productBaskets = productBaskets;
+    }
+
+    public Date getPurchasesDate() {
+        return purchasesDate;
+    }
+
+    public void setPurchasesDate(Date purchasesDate) {
+        this.purchasesDate = purchasesDate;
+    }
+
+    public BasketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BasketStatus status) {
+        this.status = status;
+    }
 }

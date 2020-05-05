@@ -21,7 +21,7 @@ public class Ingredient {
      */
     private Integer calories;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products;
 
     public Ingredient() {}
@@ -29,6 +29,10 @@ public class Ingredient {
     public Ingredient(String name, Integer calories) {
         this.name = name;
         this.calories = calories;
+    }
+
+    public void clearProducts(){
+        products.clear();
     }
 
 }

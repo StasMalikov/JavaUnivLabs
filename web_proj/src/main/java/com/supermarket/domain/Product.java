@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
 @Entity
 @Table(name = "product")
 public class Product {
@@ -40,7 +39,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProdType prodType;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "product_ingredient",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
@@ -54,7 +53,7 @@ public class Product {
      */
     private double quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="price_id", nullable=false)
     private Price price;
 
@@ -62,9 +61,14 @@ public class Product {
     @JoinColumn(name = "preferences_id", referencedColumnName = "id")
     private ProductPreferences preferences;
 
+
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductBasket> productBaskets;
+
+    public void clearIngredients(){
+        ingredients.clear();
+    }
 
     public Product() {
         id = UUID.randomUUID().toString();
@@ -95,5 +99,93 @@ public class Product {
         this.price = price;
         this.preferences = preferences;
         this.quantity = quantity;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Integer expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public WeightType getWeightType() {
+        return weightType;
+    }
+
+    public void setWeightType(WeightType weightType) {
+        this.weightType = weightType;
+    }
+
+    public ProdType getProdType() {
+        return prodType;
+    }
+
+    public void setProdType(ProdType prodType) {
+        this.prodType = prodType;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public Calendar getProductionDate() {
+        return productionDate;
+    }
+
+    public void setProductionDate(Calendar productionDate) {
+        this.productionDate = productionDate;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
+    }
+
+    public ProductPreferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(ProductPreferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public List<ProductBasket> getProductBaskets() {
+        return productBaskets;
+    }
+
+    public void setProductBaskets(List<ProductBasket> productBaskets) {
+        this.productBaskets = productBaskets;
     }
 }

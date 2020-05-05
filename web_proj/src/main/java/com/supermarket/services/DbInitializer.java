@@ -10,10 +10,7 @@ import com.supermarket.domain.enums.WeightType;
 import com.supermarket.domain.preferences.AlcoholPreference;
 import com.supermarket.domain.preferences.CaloriesPreference;
 import com.supermarket.domain.preferences.PropertyPreference;
-import com.supermarket.repos.IngredientRepo;
-import com.supermarket.repos.PriceRepo;
-import com.supermarket.repos.ProductRepo;
-import com.supermarket.repos.SupermarketUserRepo;
+import com.supermarket.repos.*;
 import com.supermarket.repos.preferences.AlcoholPreferenceRepo;
 import com.supermarket.repos.preferences.CaloriesPreferenceRepo;
 import com.supermarket.repos.preferences.PropertyPreferenceRepo;
@@ -35,11 +32,17 @@ public class DbInitializer implements CommandLineRunner {
     private ProductRepo productRepo;
     private PriceRepo priceRepo;
 
+    // not used
+    private BasketRepo basketRepo;
+    private ProductBasketRepo productBasketRepo;
+    private ProductPreferencesRepo productPreferencesRepo;
+    private UserPreferencesRepo userPreferencesRepo;
 
     public DbInitializer(IngredientRepo ingredientRepo, AlcoholPreferenceRepo alcoholPreferenceRepo,
                          CaloriesPreferenceRepo caloriesPreferenceRepo, PropertyPreferenceRepo propertyPreferenceRepo,
                          SupermarketUserRepo supermarketUserRepo, ProductRepo productRepo,
-                         PriceRepo priceRepo){
+                         PriceRepo priceRepo, BasketRepo basketRepo, ProductBasketRepo productBasketRepo,
+                         ProductPreferencesRepo productPreferencesRepo, UserPreferencesRepo userPreferencesRepo){
 
         this.ingredientRepo = ingredientRepo;
         this.alcoholPreferenceRepo = alcoholPreferenceRepo;
@@ -48,10 +51,26 @@ public class DbInitializer implements CommandLineRunner {
         this.supermarketUserRepo = supermarketUserRepo;
         this.productRepo = productRepo;
         this.priceRepo = priceRepo;
+
+        // not used
+        this.basketRepo = basketRepo;
+        this.productBasketRepo = productBasketRepo;
+        this.productPreferencesRepo = productPreferencesRepo;
+        this.userPreferencesRepo = userPreferencesRepo;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        //deleteAll();
+        // not used
+        initProductBasket();
+        initProductPreferences();
+        initUserPreferences();
+        initBasket();
+
+
+        //used
         initPrice();
         initIngredients();
         initPreferences();
@@ -59,9 +78,51 @@ public class DbInitializer implements CommandLineRunner {
         initProducts();
     }
 
+    public void deleteAll(){
+        productBasketRepo.deleteAll();
+        productPreferencesRepo.deleteAll();
+        userPreferencesRepo.deleteAll();
+        basketRepo.deleteAll();
+
+        List<Product> pList = productRepo.findAll();
+        for(Product p : pList){
+            p.clearIngredients();
+            productRepo.save(p);
+        }
+
+        List<Ingredient> iList = ingredientRepo.findAll();
+        for(Ingredient i : iList){
+            i.clearProducts();
+            ingredientRepo.save(i);
+        }
+        productRepo.deleteAll();
+
+        caloriesPreferenceRepo.deleteAll();
+        alcoholPreferenceRepo.deleteAll();
+        propertyPreferenceRepo.deleteAll();
+
+
+        ingredientRepo.deleteAll();
+        supermarketUserRepo.deleteAll();
+    }
+
+    public void initProductBasket() {
+
+    }
+
+    public void initProductPreferences() {
+
+    }
+
+    public void initUserPreferences() {
+
+    }
+
+    public void initBasket() {
+
+    }
 
     public void initProducts(){
-        productRepo.deleteAll();
 
         Calendar c1 = new GregorianCalendar();
         Set<Ingredient> i1 = new HashSet<>();
@@ -80,14 +141,12 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     public void initPrice() {
-        priceRepo.deleteAll();
 
         priceRepo.save(new Price(0, 30));
         priceRepo.save(new Price(0, 200));
     }
 
     public void initUsers() {
-        supermarketUserRepo.deleteAll();
 
         SupermarketUser user = new SupermarketUser();
         user.setUsername("user");
@@ -115,10 +174,6 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     public void initPreferences(){
-        caloriesPreferenceRepo.deleteAll();
-        alcoholPreferenceRepo.deleteAll();
-        propertyPreferenceRepo.deleteAll();
-
 
         caloriesPreferenceRepo.save(new CaloriesPreference(0, 2000));
         caloriesPreferenceRepo.save(new CaloriesPreference(3000, 0));
@@ -131,7 +186,6 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     public void initIngredients(){
-        ingredientRepo.deleteAll();
 
         ingredientRepo.save(new Ingredient("Сахар", 398));
         ingredientRepo.save(new Ingredient("Шоколад", 544));

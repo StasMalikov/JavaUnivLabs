@@ -22,57 +22,34 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/basket/">Корзина</a>
+                    <a class="nav-link" href="#">Корзина</a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Личный кабинет
                     </a>
-
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
                         <a class="dropdown-item" href="#">Another action</a>
-
                         <div class="dropdown-divider"></div>
-
                         <form action="/logout" method="post" class="form-inline">
                             <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                             <input type="submit" class="dropdown-item" value="Выйти"/>
                         </form>
-
                     </div>
                 </li>
             </ul>
-
-            <form class="form-inline">
-                <a class="btn btn-outline-light my-2 my-sm-0" href="/login" type="button">Вход</a>
-            </form>
-            &nbsp;
-            <form class="form-inline">
-                <a class="btn btn-outline-light my-2 my-sm-0" href="/registration" type="button">Регистрация</a>
-            </form>
         </div>
     </nav>
     <!-- body  -->
-<!--    <form action="/test" method="post">-->
-<!--        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />-->
-<!--        <button style="color: black" class="btn btn-outline-light my-2 my-sm-0" type="submit">Test</button>-->
-<!--    </form>-->
 
-    <h2 align="center">Каталог товаров</h2>
+    <h2 align="center">Корзина</h2>
 
     {{#message1}}
     <div class="alert alert-success" role="alert">
-       Продукт <a class="alert-link">{{message1}}</a> успешно добавлен в <a href="#" class="alert-link">корзину</a>!
+        Ваша корзина пуста. Добавить в неё продукты можно в <a class="alert-link" href="/">каталоге товаров</a>{{message1}}
     </div>
     {{/message1}}
-
-    {{#message2}}
-    <div class="alert alert-success" role="alert">
-        Продукт <a class="alert-link">{{message2}}</a> уже добавлен в <a href="#" class="alert-link">корзину</a>!
-    </div>
-    {{/message2}}
 
     <table class="table">
         <thead>
@@ -80,7 +57,7 @@
             <th scope="col">Название</th>
             <th scope="col">Катерория</th>
             <th scope="col">Количество</th>
-            <th scope="col">Ингредиенты</th>
+            <th scope="col">Размерность</th>
             <th scope="col">Цена</th>
             <th scope="col"></th>
         </tr>
@@ -89,28 +66,25 @@
 
         {{#products}}
         <tr>
-            <form action="/basket/add" method="post" class="form-inline">
+            <form action="/basket/update" method="post" class="form-inline">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <input type="hidden" name="product_id" value="{{id}}" />
-            <td>{{name}}</td>
-            <td>{{prodType.russianValue}}</td>
-            <td>{{quantity}} {{weightType.russianValue}}</td>
-            <td>
-                <select class="custom-select">
-                    {{#ingredients}}
-                    <option>{{name}}</option>
-                    {{/ingredients}}
-
-                </select>
-            </td>
-            <td>{{price.price}}</td>
-            <td><button type="submit" class="btn btn-success">В корзину</button></td>
+                <input type="hidden" name="productBasket_id" value="{{id}}" />
+                <td>{{product.name}}</td>
+                <td>{{product.prodType.russianValue}}</td>
+                <td><input type="number" name="count" class="form-control" value="{{count}}" min="0" max="{{product.quantity}}"></td>
+                <td>{{product.weightType.russianValue}}</td>
+                <td>{{product.price.price}}</td>
+                <td>
+                    <input type="submit" class="btn btn-primary" name="submit" value="Сохранить изменения" />&nbsp;
+                    <input type="submit" class="btn btn-danger" name="submit" value="Удалить" />
+                </td>
             </form>
         </tr>
         {{/products}}
 
         </tbody>
     </table>
+
 
     <!-- body end -->
 </div>

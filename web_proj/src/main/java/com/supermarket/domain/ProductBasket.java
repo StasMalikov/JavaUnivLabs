@@ -3,6 +3,7 @@ package com.supermarket.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -10,9 +11,8 @@ import javax.persistence.*;
 public class ProductBasket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     private double count;
 
@@ -24,9 +24,12 @@ public class ProductBasket {
     @JoinColumn(name="basket_id", nullable=false)
     private Basket basket;
 
-    public ProductBasket(){}
+    public ProductBasket(){
+        id = UUID.randomUUID().toString();
+    }
 
     public ProductBasket(Product product, double count, Basket basket){
+        id = UUID.randomUUID().toString();
         this.product = product;
         this.count = count;
         this.basket = basket;
