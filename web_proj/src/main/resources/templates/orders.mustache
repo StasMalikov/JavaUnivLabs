@@ -54,7 +54,8 @@
     {{/message1}}
 
     {{#orders}}
-    <h3>Заказ {{#purchasesDate}}от {{purchasesDate}}{{/purchasesDate}} </h3>
+    <hr>
+    <h3 align="center">Заказ {{#basket.purchasesDate}}от {{basket.purchasesDate}}{{/basket.purchasesDate}} </h3>
     <table class="table">
         <thead>
         <tr>
@@ -67,7 +68,7 @@
         </thead>
         <tbody>
 
-        {{#productBaskets}}
+        {{#basket.productBaskets}}
         <tr>
             <form action="/basket/update" method="post" class="form-inline">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
@@ -78,9 +79,11 @@
                 <td>{{product.price.price}}</td>
             </form>
         </tr>
-        {{/productBaskets}}
+        {{/basket.productBaskets}}
         </tbody>
     </table>
+    <h4>Сумма калорий: {{caloriesSum}}</h4>
+    <h4>Итоговая стоимость: {{moneySum}}</h4>
     {{/orders}}
 
 

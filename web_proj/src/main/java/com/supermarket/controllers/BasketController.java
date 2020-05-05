@@ -5,6 +5,8 @@ import com.supermarket.domain.Product;
 import com.supermarket.domain.ProductBasket;
 import com.supermarket.domain.SupermarketUser;
 import com.supermarket.domain.enums.BasketStatus;
+import com.supermarket.domain.view.DetailedBasket;
+import com.supermarket.domain.view.DetailedProductBasket;
 import com.supermarket.repos.BasketRepo;
 import com.supermarket.repos.ProductRepo;
 import com.supermarket.services.ProductBasketService;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.xml.crypto.Data;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class BasketController {
         if (basket == null) {
             model.put("message1", ".");
         } else {
-            List<ProductBasket> list = productBasketService.getProductBaskets(basket);
+            List<DetailedProductBasket> list = DetailedProductBasket.toDetailedProductBasket(productBasketService.getProductBaskets(basket));
             if (list.size() == 0) {
                 model.put("message1", ".");
             }else {
@@ -87,7 +89,7 @@ public class BasketController {
             productBasketService.updateCountProductBasket(pb, count);
         }
 
-        List<ProductBasket> list = productBasketService.getProductBaskets(basket);
+        List<DetailedProductBasket> list = DetailedProductBasket.toDetailedProductBasket(productBasketService.getProductBaskets(basket));
         if (list.size() == 0) {
             model.put("message1", ".");
         }else {
@@ -117,7 +119,10 @@ public class BasketController {
         List<Basket> baskets = basketRepo.findAllByStatusAndCustomer(BasketStatus.CANCELED, user);
         Date a = new Date();
         if(baskets.size() > 0) {
-            model.put("orders", baskets);
+
+            List<DetailedBasket> dBaskets = DetailedBasket.toDetailedBaskets(baskets);
+            model.put("orders", dBaskets);
+
         } else {
             model.put("message1", ".");
         }

@@ -74,7 +74,9 @@
             <th scope="col">Катерория</th>
             <th scope="col">Количество</th>
             <th scope="col">Размерность</th>
-            <th scope="col">Цена</th>
+            <th scope="col">Цена за единицу</th>
+            <th scope="col">Цена итоговая</th>
+            <th scope="col">Калории</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -84,12 +86,14 @@
         <tr>
             <form action="/basket/update" method="post" class="form-inline">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <input type="hidden" name="productBasket_id" value="{{id}}" />
-                <td>{{product.name}}</td>
-                <td>{{product.prodType.russianValue}}</td>
-                <td><input type="number" name="count" class="form-control" value="{{count}}" min="0" max="{{product.quantity}}"></td>
-                <td>{{product.weightType.russianValue}}</td>
-                <td>{{product.price.price}}</td>
+                <input type="hidden" name="productBasket_id" value="{{productBasket.id}}" />
+                <td>{{productBasket.product.name}}</td>
+                <td>{{productBasket.product.prodType.russianValue}}</td>
+                <td><input type="number" name="count" class="form-control" value="{{productBasket.count}}" min="0" max="{{productBasket.product.quantity}}"></td>
+                <td>{{productBasket.product.weightType.russianValue}}</td>
+                <td>{{productBasket.product.price.price}}</td>
+                <td>{{moneySum}}</td>
+                <td>{{caloriesSum}}</td>
                 <td>
                     <input type="submit" class="btn btn-primary" name="submit" value="Сохранить изменения" />&nbsp;
                     <input type="submit" class="btn btn-danger" name="submit" value="Удалить" />
