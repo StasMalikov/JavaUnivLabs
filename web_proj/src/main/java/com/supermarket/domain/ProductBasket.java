@@ -21,7 +21,7 @@ public class ProductBasket {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name="basket_id", nullable=false)
+    @JoinColumn(name="basket_id", nullable=true)
     private Basket basket;
 
     public ProductBasket(){

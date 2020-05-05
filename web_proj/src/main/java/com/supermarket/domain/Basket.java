@@ -20,7 +20,7 @@ public class Basket {
     @JoinColumn(name="user_id", nullable=false)
     private SupermarketUser customer;
 
-    @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "basket", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER, orphanRemoval = true)
     private List<ProductBasket> productBaskets;
 
     private Date purchasesDate;
