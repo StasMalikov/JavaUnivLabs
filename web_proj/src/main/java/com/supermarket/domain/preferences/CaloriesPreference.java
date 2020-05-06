@@ -16,5 +16,4 @@ public class CaloriesPreference extends Preference {
         this.maxCalories = maxCalories;
         this.minCalories = minCalories;
     }
-
 }

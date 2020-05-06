@@ -1,8 +1,7 @@
 package com.supermarket.domain.preferences;
 
-
-import com.supermarket.domain.Product;
-import com.supermarket.domain.SupermarketUser;
+import com.supermarket.domain.ProductPreferences;
+import com.supermarket.domain.UserPreferences;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,9 +17,9 @@ public abstract class Preference {
     @Column(name = "preference_id")
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SupermarketUser> users;
+    @ManyToMany(mappedBy = "preferences", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserPreferences> userPreferences;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> products;
+    @ManyToMany(mappedBy = "preferencesProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductPreferences> productPreferences;
 }

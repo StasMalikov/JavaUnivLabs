@@ -59,7 +59,7 @@ public class Product {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "preferences_id", referencedColumnName = "id")
-    private ProductPreferences preferences;
+    private ProductPreferences productPreferences;
 
 
     @Fetch(value = FetchMode.SUBSELECT)
@@ -97,7 +97,7 @@ public class Product {
         this.prodType = prodType;
         this.ingredients = ingredients;
         this.price = price;
-        this.preferences = preferences;
+        this.productPreferences = preferences;
         this.quantity = quantity;
     }
 
@@ -174,11 +174,11 @@ public class Product {
     }
 
     public ProductPreferences getPreferences() {
-        return preferences;
+        return productPreferences;
     }
 
     public void setPreferences(ProductPreferences preferences) {
-        this.preferences = preferences;
+        this.productPreferences = preferences;
     }
 
     public List<ProductBasket> getProductBaskets() {

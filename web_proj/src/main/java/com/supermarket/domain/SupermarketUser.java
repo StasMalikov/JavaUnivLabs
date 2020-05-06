@@ -1,6 +1,5 @@
 package com.supermarket.domain;
 
-import com.supermarket.domain.enums.BasketStatus;
 import com.supermarket.domain.enums.Role;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -31,7 +30,7 @@ public class SupermarketUser implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "preferences_id", referencedColumnName = "id")
-    private UserPreferences preferences;
+    private UserPreferences userPreferences;
 
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
@@ -50,7 +49,7 @@ public class SupermarketUser implements UserDetails {
                 ", password='" + password + '\'' +
                 ", birthday=" + birthday +
                 ", active=" + active +
-                ", preferences=" + preferences +
+                ", preferences=" + userPreferences +
                 ", baskets=" + baskets +
                 ", roles=" + roles +
                 '}';

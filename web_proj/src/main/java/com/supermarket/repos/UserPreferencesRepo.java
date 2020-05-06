@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserPreferencesRepo extends JpaRepository<UserPreferences, Long> {
-
+    UserPreferences findByUser(SupermarketUser user);
 }

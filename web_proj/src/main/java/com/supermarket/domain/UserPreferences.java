@@ -3,6 +3,7 @@ package com.supermarket.domain;
 import com.supermarket.domain.preferences.Preference;
 import lombok.Data;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,16 +17,29 @@ public class UserPreferences {
     private Long id;
 
 
-    @OneToOne(mappedBy = "preferences")
+    @OneToOne(mappedBy = "userPreferences")
     private SupermarketUser user;
 
     /**
      * Предпочтения пользователя.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_preference",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "preference_id")
     )
     private Set<Preference> preferences;
+
+    public UserPreferences(SupermarketUser user){
+        this.user = user;
+        preferences = new HashSet<>();
+    }
+
+    public void addPreference(Preference preference){
+        preferences.add(preference);
+    }
+
+    public void deletePreference(Preference preference){
+        preferences.remove(preference);
+    }
 }

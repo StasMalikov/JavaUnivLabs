@@ -15,7 +15,7 @@ public class ProductPreferences {
     private Long id;
 
 
-    @OneToOne(mappedBy = "preferences")
+    @OneToOne(mappedBy = "productPreferences")
     private Product product;
 
     /**
@@ -26,5 +26,5 @@ public class ProductPreferences {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "preference_id")
     )
-    private Set<Preference> preferences;
+    private Set<Preference> preferencesProduct;
 }
