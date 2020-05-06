@@ -44,33 +44,44 @@ public class PreferencesService {
     }
 
     private void addPreference(Preference preference, SupermarketUser supermarketUser) {
-        UserPreferences userPreferences = userPreferencesRepo.findByUser(supermarketUser);
-        if(userPreferences == null){
-            userPreferences = userPreferencesRepo.save(new UserPreferences(supermarketUser));
-            supermarketUser.setUserPreferences(userPreferences);
-            supermarketUserRepo.save(supermarketUser);
+        if (supermarketUser.getUserPreferences() == null) {
+            supermarketUser.setUserPreferences(userPreferencesRepo.save(new UserPreferences(supermarketUser)));
         }
-        userPreferences.addPreference(preference);
-        userPreferencesRepo.save(userPreferences);
+
+        supermarketUser.getUserPreferences().getPreferences().add(preference);
+        userPreferencesRepo.save(supermarketUser.getUserPreferences());
     }
 
     public void deletePreference(Long preference_id, SupermarketUser supermarketUser) {
-        Preference preference = caloriesPreferenceRepo.findById(preference_id).get();
-        UserPreferences userPreferences = userPreferencesRepo.findByUser(supermarketUser);
-        if(userPreferences != null) {
-            userPreferences.deletePreference(preference);
-            userPreferencesRepo.save(userPreferences);
-        }
+        supermarketUser.getUserPreferences().getPreferences().remove(caloriesPreferenceRepo.findById(preference_id).get());
+        userPreferencesRepo.save(supermarketUser.getUserPreferences());
     }
 
     public List<Preference> getPreferences(SupermarketUser supermarketUser){
         List<Preference> result = new ArrayList<>();
-        UserPreferences preferences = userPreferencesRepo.findByUser(supermarketUser);
-        if (preferences != null){
-            result.addAll(preferences.getPreferences());
-            return result;
+        if (supermarketUser.getUserPreferences() == null) {
+            supermarketUser.setUserPreferences(userPreferencesRepo.save(new UserPreferences(supermarketUser)));
+            result.addAll(supermarketUserRepo.save(supermarketUser).getUserPreferences().getPreferences());
+        } else {
+            result.addAll(supermarketUser.getUserPreferences().getPreferences());
         }
-        return null;
+
+        return result;
+    }
+
+    public boolean haveCalorie(SupermarketUser supermarketUser){
+        List<Preference> list = new ArrayList<>();
+        if (supermarketUser.getUserPreferences() == null) {
+            supermarketUser.setUserPreferences(userPreferencesRepo.save(new UserPreferences(supermarketUser)));
+            supermarketUserRepo.save(supermarketUser);
+        }
+        list.addAll(supermarketUser.getUserPreferences().getPreferences());
+        for(Preference p : list){
+            if(p instanceof CaloriesPreference){
+                return true;
+            }
+        }
+        return false;
     }
 
     public CaloriesPreference getCalories(List<Preference> list){

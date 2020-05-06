@@ -4,6 +4,7 @@ import com.supermarket.domain.SupermarketUser;
 import com.supermarket.domain.enums.Role;
 import com.supermarket.repos.ProductRepo;
 import com.supermarket.repos.SupermarketUserRepo;
+import com.supermarket.repos.UserPreferencesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ public class MainController {
 
     @Autowired
     ProductRepo productRepo;
+
+    @Autowired
+    UserPreferencesRepo userPreferencesRepo;
 
     @Autowired
     private SupermarketUserRepo supermarketUserRepo;

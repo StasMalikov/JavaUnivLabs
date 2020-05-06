@@ -1,9 +1,6 @@
 package com.supermarket.services;
 
-import com.supermarket.domain.Ingredient;
-import com.supermarket.domain.Price;
-import com.supermarket.domain.Product;
-import com.supermarket.domain.SupermarketUser;
+import com.supermarket.domain.*;
 import com.supermarket.domain.enums.ProdType;
 import com.supermarket.domain.enums.Role;
 import com.supermarket.domain.enums.WeightType;
@@ -161,6 +158,7 @@ public class DbInitializer implements CommandLineRunner {
         user2.setActive(true);
         user2.setRoles(Collections.singleton(Role.USER));
         supermarketUserRepo.save(user2);
+
 
         SupermarketUser admin = new SupermarketUser();
         admin.setUsername("admin");

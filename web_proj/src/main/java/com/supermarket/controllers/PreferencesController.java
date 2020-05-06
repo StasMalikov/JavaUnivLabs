@@ -1,9 +1,6 @@
 package com.supermarket.controllers;
 
-import com.supermarket.domain.Basket;
-import com.supermarket.domain.ProductBasket;
 import com.supermarket.domain.SupermarketUser;
-import com.supermarket.domain.enums.BasketStatus;
 import com.supermarket.domain.preferences.CaloriesPreference;
 import com.supermarket.domain.preferences.Preference;
 import com.supermarket.services.PreferencesService;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +25,8 @@ public class PreferencesController {
 
     @GetMapping("/")
     public String getPreferences(@AuthenticationPrincipal SupermarketUser user, Map<String, Object> model) {
-           List<Preference> preferences =  user.getUserPreferences().getPreferences();
-           if(preferences == null || preferences.size() == 0) {
+           List<Preference> preferences = preferencesService.getPreferences(user);
+           if(preferences.size() == 0) {
                model.put("messageNoPreferences", ".");
            } else {
                CaloriesPreference c = preferencesService.getCalories(preferences);
@@ -54,12 +50,15 @@ public class PreferencesController {
 
             if(min.equals(""))
                 min = "0";
+            if(preferencesService.haveCalorie(user)){
 
-            preferencesService.addCaloriesPreference(Integer.valueOf(min), Integer.valueOf(max) , user);
+            } else {
+                preferencesService.addCaloriesPreference(Integer.valueOf(min), Integer.valueOf(max) , user);
+            }
         }
 
         List<Preference> preferences =  preferencesService.getPreferences(user);
-        if(preferences == null || preferences.size() == 0) {
+        if(preferences.size() == 0) {
             model.put("messageNoPreferences", ".");
         } else {
             CaloriesPreference c = preferencesService.getCalories(preferences);

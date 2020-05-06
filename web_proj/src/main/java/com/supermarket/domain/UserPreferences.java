@@ -30,6 +30,8 @@ public class UserPreferences {
     )
     private Set<Preference> preferences;
 
+    public UserPreferences(){}
+
     public UserPreferences(SupermarketUser user){
         this.user = user;
         preferences = new HashSet<>();
