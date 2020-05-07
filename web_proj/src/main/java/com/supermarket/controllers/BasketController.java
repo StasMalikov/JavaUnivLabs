@@ -5,10 +5,12 @@ import com.supermarket.domain.Product;
 import com.supermarket.domain.ProductBasket;
 import com.supermarket.domain.SupermarketUser;
 import com.supermarket.domain.enums.BasketStatus;
+import com.supermarket.domain.preferences.CaloriesPreference;
 import com.supermarket.domain.view.DetailedBasket;
 import com.supermarket.domain.view.DetailedProductBasket;
 import com.supermarket.repos.BasketRepo;
 import com.supermarket.repos.ProductRepo;
+import com.supermarket.services.PreferencesService;
 import com.supermarket.services.ProductBasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +39,9 @@ public class BasketController {
 
     @Autowired
     private ProductBasketService productBasketService;
+
+    @Autowired
+    PreferencesService preferencesService;
 
     @GetMapping("/")
     public String getReserved(@AuthenticationPrincipal SupermarketUser user, Map<String, Object> model) {
@@ -105,10 +110,22 @@ public class BasketController {
         if(basket == null){
             model.put("message3", ".");
         } else {
-            basket.setStatus(BasketStatus.CANCELED);
-            basket.setPurchasesDate(new Date());
-            basketRepo.save(basket);
-            model.put("message2", "!");
+
+            DetailedBasket dBasket = new DetailedBasket(basket);
+            CaloriesPreference cp = preferencesService.getCalories(preferencesService.getPreferences(user));
+
+            if (cp != null && dBasket.checkCaloriesPreference(cp)){
+                basket.setStatus(BasketStatus.CANCELED);
+                basket.setPurchasesDate(new Date());
+                basketRepo.save(basket);
+                model.put("message2", "!");
+            } else {
+                model.put("messageConfirmError", "Контроль калорий - минимальные калории: " + cp.getMinCalories() +
+                        " максимальные калории: " + cp.getMaxCalories());
+                List<DetailedProductBasket> list = DetailedProductBasket.toDetailedProductBasket(productBasketService.getProductBaskets(basket));
+                model.put("products", list);
+            }
+
         }
 
         return "basket";

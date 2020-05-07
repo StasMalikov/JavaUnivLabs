@@ -3,6 +3,7 @@ package com.supermarket.domain.view;
 import com.supermarket.domain.Basket;
 import com.supermarket.domain.Ingredient;
 import com.supermarket.domain.ProductBasket;
+import com.supermarket.domain.preferences.CaloriesPreference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,26 @@ public class DetailedBasket {
        moneySum = calculateMoneySum();
        caloriesSum = calculateCaloriesSum();
    }
+
+    /**
+     * true - удовлетворяет предпочтению.
+     * false - не удовлетворяет предпочтению.
+     */
+    public boolean checkCaloriesPreference(CaloriesPreference preference){
+        boolean result = false;
+        if (caloriesSum >= preference.getMinCalories())
+        {
+            if(preference.getMaxCalories() != 0){
+                if(caloriesSum <= preference.getMaxCalories()){
+                    result = true;
+                }
+            } else {
+                result = true;
+            }
+        }
+
+        return result;
+    }
 
    public static List<DetailedBasket> toDetailedBaskets(List<Basket> baskets){
        List<DetailedBasket> detailedBaskets = new ArrayList<>();

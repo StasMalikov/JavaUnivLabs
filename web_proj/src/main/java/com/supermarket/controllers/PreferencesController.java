@@ -37,11 +37,25 @@ public class PreferencesController {
         return "preferences";
     }
 
+    @PostMapping("/delete")
+    public String delete(@AuthenticationPrincipal SupermarketUser user, String preference_id, Map<String, Object> model){
+        preferencesService.deletePreference(Long.valueOf(preference_id), user);
+        List<Preference> preferences = preferencesService.getPreferences(user);
+        if(preferences.size() == 0) {
+            model.put("messageNoPreferences", ".");
+        } else {
+            CaloriesPreference c = preferencesService.getCalories(preferences);
+            if(c != null){
+                model.put("caloriesPreference", c);
+            }
+        }
+        return "preferences";
+    }
+
     @PostMapping("/add_calories")
     public String addCalories(@AuthenticationPrincipal SupermarketUser user,
                               @RequestParam String min, @RequestParam String max,
                               Map<String, Object> model){
-
         if("".equals(max) && "".equals(min)){
             model.put("messageBadCalories", ".");
         }else{
@@ -51,12 +65,11 @@ public class PreferencesController {
             if(min.equals(""))
                 min = "0";
             if(preferencesService.haveCalorie(user)){
-
+                model.put("messageHaveCalories", ".");
             } else {
                 preferencesService.addCaloriesPreference(Integer.valueOf(min), Integer.valueOf(max) , user);
             }
         }
-
         List<Preference> preferences =  preferencesService.getPreferences(user);
         if(preferences.size() == 0) {
             model.put("messageNoPreferences", ".");
@@ -66,7 +79,6 @@ public class PreferencesController {
                 model.put("caloriesPreference", c);
             }
         }
-
         return "preferences";
     }
 

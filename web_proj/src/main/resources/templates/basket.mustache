@@ -105,6 +105,13 @@
         </tbody>
     </table>
 
+
+    {{#messageConfirmError}}
+    <div class="alert alert-danger" role="alert">
+        Корзина не  удовлетворяет предпочтению: {{messageConfirmError}}
+    </div>
+    {{/messageConfirmError}}
+
     <form action="/basket/confirm" method="post" class="form-inline">
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <input type="submit" class="btn btn-success" name="submit" value="Оформить покупку"/>

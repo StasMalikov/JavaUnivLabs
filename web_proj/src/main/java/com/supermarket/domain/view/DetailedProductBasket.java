@@ -2,6 +2,7 @@ package com.supermarket.domain.view;
 
 import com.supermarket.domain.Ingredient;
 import com.supermarket.domain.ProductBasket;
+import com.supermarket.domain.preferences.CaloriesPreference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class DetailedProductBasket {
         }
         return detailedProductBaskets;
     }
+
 
     public double calculateMoneySum(){
 
