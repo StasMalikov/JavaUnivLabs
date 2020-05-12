@@ -6,7 +6,8 @@ public enum ProdType {
     BREAD("хлебобулочное изделие"),
     VEGETABLES("овощи"),
     CHEMISTRY_FOR_HOME("бытовая химия"),
-    ALCOHOL("алкоголь");
+    ALCOHOL("алкоголь"),
+    SOFTDRINK("безалкогольный напиток");
 
     private String russianValue;
     ProdType(String russianValue) {this.russianValue = russianValue;}
@@ -27,6 +28,8 @@ public enum ProdType {
                 return ProdType.CHEMISTRY_FOR_HOME;
             case "алкоголь":
                 return ProdType.ALCOHOL;
+            case "безалкогольный напиток":
+                return ProdType.SOFTDRINK;
         }
         return null;
     }

@@ -18,9 +18,6 @@
 
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/basket/">Корзина</a>
                 </li>
@@ -47,11 +44,11 @@
             </ul>
 
             <form class="form-inline">
-                <a class="btn btn-outline-light my-2 my-sm-0" href="/login" type="button">Вход</a>
+                <a style="color: white" href="/login" type="button">Вход</a>
             </form>
-            &nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <form class="form-inline">
-                <a class="btn btn-outline-light my-2 my-sm-0" href="/registration" type="button">Регистрация</a>
+                <a style="color: white" href="/registration" type="button">Регистрация</a>
             </form>
         </div>
     </nav>
@@ -65,13 +62,13 @@
 
     {{#message1}}
     <div class="alert alert-success" role="alert">
-       Продукт <a class="alert-link">{{message1}}</a> успешно добавлен в <a href="#" class="alert-link">корзину</a>!
+       Продукт <a class="alert-link">{{message1}}</a> успешно добавлен в <a href="/basket/" class="alert-link">корзину</a>!
     </div>
     {{/message1}}
 
     {{#message2}}
     <div class="alert alert-success" role="alert">
-        Продукт <a class="alert-link">{{message2}}</a> уже добавлен в <a href="#" class="alert-link">корзину</a>!
+        Продукт <a class="alert-link">{{message2}}</a> уже добавлен в <a href="/basket/" class="alert-link">корзину</a>!
     </div>
     {{/message2}}
 

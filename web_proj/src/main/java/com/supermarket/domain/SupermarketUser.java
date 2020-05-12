@@ -41,6 +41,13 @@ public class SupermarketUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    public SupermarketUser(){}
+
+    public SupermarketUser(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "SupermarketUser{" +

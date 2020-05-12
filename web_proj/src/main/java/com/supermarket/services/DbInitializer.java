@@ -25,10 +25,9 @@ public class DbInitializer implements CommandLineRunner {
     private AlcoholPreferenceRepo alcoholPreferenceRepo;
     private CaloriesPreferenceRepo caloriesPreferenceRepo;
     private PropertyPreferenceRepo propertyPreferenceRepo;
-    private SupermarketUserRepo supermarketUserRepo;
     private ProductRepo productRepo;
     private PriceRepo priceRepo;
-
+    private SupermarketUserSevice supermarketUserSevice;
     // not used
     private BasketRepo basketRepo;
     private ProductBasketRepo productBasketRepo;
@@ -37,17 +36,18 @@ public class DbInitializer implements CommandLineRunner {
 
     public DbInitializer(IngredientRepo ingredientRepo, AlcoholPreferenceRepo alcoholPreferenceRepo,
                          CaloriesPreferenceRepo caloriesPreferenceRepo, PropertyPreferenceRepo propertyPreferenceRepo,
-                         SupermarketUserRepo supermarketUserRepo, ProductRepo productRepo,
+                         ProductRepo productRepo,
                          PriceRepo priceRepo, BasketRepo basketRepo, ProductBasketRepo productBasketRepo,
-                         ProductPreferencesRepo productPreferencesRepo, UserPreferencesRepo userPreferencesRepo){
+                         ProductPreferencesRepo productPreferencesRepo, UserPreferencesRepo userPreferencesRepo,
+                         SupermarketUserSevice supermarketUserSevice){
 
         this.ingredientRepo = ingredientRepo;
         this.alcoholPreferenceRepo = alcoholPreferenceRepo;
         this.caloriesPreferenceRepo = caloriesPreferenceRepo;
         this.propertyPreferenceRepo = propertyPreferenceRepo;
-        this.supermarketUserRepo = supermarketUserRepo;
         this.productRepo = productRepo;
         this.priceRepo = priceRepo;
+        this.supermarketUserSevice = supermarketUserSevice;
 
         // not used
         this.basketRepo = basketRepo;
@@ -100,7 +100,7 @@ public class DbInitializer implements CommandLineRunner {
 
 
         ingredientRepo.deleteAll();
-        supermarketUserRepo.deleteAll();
+        supermarketUserSevice.deleteAll();
     }
 
     public void initProductBasket() {
@@ -125,6 +125,7 @@ public class DbInitializer implements CommandLineRunner {
         Set<Ingredient> i1 = new HashSet<>();
         i1.add(ingredientRepo.findByName("Сахар"));
         i1.add(ingredientRepo.findByName("Мука"));
+        i1.add(ingredientRepo.findByName("Соль"));
         i1.add(ingredientRepo.findByName("Куриное яйцо"));
         productRepo.save( new Product("Хлеб",5, 120, c1,
                 WeightType.KILOGRAM, ProdType.BREAD, i1, priceRepo.findByPrice(30)));
@@ -132,53 +133,68 @@ public class DbInitializer implements CommandLineRunner {
         Set<Ingredient> i2 = new HashSet<>();
         i2.add(ingredientRepo.findByName("Огурцы"));
         i2.add(ingredientRepo.findByName("Помидоры"));
+        i2.add(ingredientRepo.findByName("Соль"));
+        i2.add(ingredientRepo.findByName("Масло оливковое"));
         productRepo.save( new Product("Салат овощной",3, 24, c1,
-                WeightType.KILOGRAM, ProdType.VEGETABLES, i2, priceRepo.findByPrice(200)));
+                WeightType.KILOGRAM, ProdType.VEGETABLES, i2, priceRepo.findByPrice(150)));
 
+        Set<Ingredient> i3 = new HashSet<>();
+        i3.add(ingredientRepo.findByName("Сахар"));
+        i3.add(ingredientRepo.findByName("Мука"));
+        i3.add(ingredientRepo.findByName("Куриное яйцо"));
+        i3.add(ingredientRepo.findByName("Шоколад"));
+        productRepo.save( new Product("Булочка с шоколадом",7, 30, c1,
+                WeightType.PIECE, ProdType.BREAD, i3, priceRepo.findByPrice(45)));
+
+        Set<Ingredient> i4 = new HashSet<>();
+        i4.add(ingredientRepo.findByName("Вода"));
+        i4.add(ingredientRepo.findByName("Висковые зерновые десциляторы"));
+        productRepo.save( new Product("Виски Джим Бим",2, 500, c1,
+                WeightType.PIECE, ProdType.ALCOHOL, i4, priceRepo.findByPrice(400)));
+
+        Set<Ingredient> i5 = new HashSet<>();
+        i5.add(ingredientRepo.findByName("Вода"));
+        productRepo.save( new Product("Вода Архыз питьевая столовая газ",10, 1000, c1,
+                WeightType.PIECE, ProdType.SOFTDRINK, i5, priceRepo.findByPrice(35)));
+
+        Set<Ingredient> i6 = new HashSet<>();
+        i6.add(ingredientRepo.findByName("Свинина жирная"));
+        i6.add(ingredientRepo.findByName("Куриное яйцо"));
+        i6.add(ingredientRepo.findByName("Мука"));
+        productRepo.save( new Product("Отбивная из свинины",3, 24, c1,
+                WeightType.KILOGRAM, ProdType.MEAT, i6, priceRepo.findByPrice(450)));
     }
 
     public void initPrice() {
 
         priceRepo.save(new Price(0, 30));
-        priceRepo.save(new Price(0, 200));
+        priceRepo.save(new Price(0, 150));
+        priceRepo.save(new Price(0, 45));
+        priceRepo.save(new Price(0, 400));
+        priceRepo.save(new Price(0, 35));
+        priceRepo.save(new Price(0, 450));
     }
 
     public void initUsers() {
 
-        SupermarketUser user = new SupermarketUser();
-        user.setUsername("user");
-        user.setPassword("user");
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        supermarketUserRepo.save(user);
+        SupermarketUser user = new SupermarketUser("user", "user");
+        supermarketUserSevice.registerUser(user);
 
-        SupermarketUser user2 = new SupermarketUser();
-        user2.setUsername("u");
-        user2.setPassword("u");
-        user2.setActive(true);
-        user2.setRoles(Collections.singleton(Role.USER));
-        supermarketUserRepo.save(user2);
+        SupermarketUser user2 = new SupermarketUser("u", "u");
+        supermarketUserSevice.registerUser(user2);
 
-
-        SupermarketUser admin = new SupermarketUser();
-        admin.setUsername("admin");
-        admin.setPassword("admin");
-        admin.setActive(true);
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
-        roles.add(Role.ADMIN);
-        admin.setRoles(roles);
-        supermarketUserRepo.save(admin);
+        SupermarketUser admin = new SupermarketUser("admin", "admin");
+        supermarketUserSevice.registerAdmin(admin);
     }
 
     public void initPreferences(){
 
-        caloriesPreferenceRepo.save(new CaloriesPreference(0, 2000));
-        caloriesPreferenceRepo.save(new CaloriesPreference(3000, 0));
-
-        alcoholPreferenceRepo.save(new AlcoholPreference(0,0));
-        alcoholPreferenceRepo.save(new AlcoholPreference(40,300));
-        alcoholPreferenceRepo.save(new AlcoholPreference(10,750));
+//        caloriesPreferenceRepo.save(new CaloriesPreference(0, 2000));
+//        caloriesPreferenceRepo.save(new CaloriesPreference(3000, 0));
+//
+//        alcoholPreferenceRepo.save(new AlcoholPreference(0,0));
+//        alcoholPreferenceRepo.save(new AlcoholPreference(40,300));
+//        alcoholPreferenceRepo.save(new AlcoholPreference(10,750));
 
         propertyPreferenceRepo.save(new PropertyPreference("muslim religion"));
     }
@@ -186,6 +202,7 @@ public class DbInitializer implements CommandLineRunner {
     public void initIngredients(){
 
         ingredientRepo.save(new Ingredient("Сахар", 398));
+        ingredientRepo.save(new Ingredient("Соль", 70));
         ingredientRepo.save(new Ingredient("Шоколад", 544));
         ingredientRepo.save(new Ingredient("Мука", 321));
         ingredientRepo.save(new Ingredient("Молоко 2,5%", 52));
@@ -197,5 +214,8 @@ public class DbInitializer implements CommandLineRunner {
         ingredientRepo.save(new Ingredient("Говядина", 191));
         ingredientRepo.save(new Ingredient("Свинина жирная", 484));
         ingredientRepo.save(new Ingredient("Куриное яйцо", 157));
+        ingredientRepo.save(new Ingredient("Масло оливковое", 300));
+        ingredientRepo.save(new Ingredient("Вода", 20));
+        ingredientRepo.save(new Ingredient("Висковые зерновые десциляторы", 250));
     }
 }
