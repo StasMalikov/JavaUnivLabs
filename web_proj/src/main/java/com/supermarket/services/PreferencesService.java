@@ -1,45 +1,41 @@
 package com.supermarket.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supermarket.domain.SupermarketUser;
 import com.supermarket.domain.UserPreferences;
 import com.supermarket.domain.preferences.CaloriesPreference;
+import com.supermarket.domain.preferences.JSONPreference;
 import com.supermarket.domain.preferences.Preference;
 import com.supermarket.repos.SupermarketUserRepo;
 import com.supermarket.repos.UserPreferencesRepo;
-import com.supermarket.repos.preferences.AlcoholPreferenceRepo;
-import com.supermarket.repos.preferences.CaloriesPreferenceRepo;
-import com.supermarket.repos.preferences.PropertyPreferenceRepo;
+import com.supermarket.repos.preferences.JSONPreferenceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PreferencesService {
 
-    private AlcoholPreferenceRepo alcoholPreferenceRepo;
-    private CaloriesPreferenceRepo caloriesPreferenceRepo;
-    private PropertyPreferenceRepo propertyPreferenceRepo;
+    private JSONPreferenceRepo jsonPreferenceRepo;
     private UserPreferencesRepo userPreferencesRepo;
     private SupermarketUserRepo supermarketUserRepo;
 
     @Autowired
-    public PreferencesService(AlcoholPreferenceRepo alcoholPreferenceRepo,
-                              CaloriesPreferenceRepo caloriesPreferenceRepo,
-                              PropertyPreferenceRepo propertyPreferenceRepo,
+    public PreferencesService(JSONPreferenceRepo jsonPreferenceRepo,
                               UserPreferencesRepo userPreferencesRepo,
                               SupermarketUserRepo supermarketUserRepo){
 
-        this.alcoholPreferenceRepo = alcoholPreferenceRepo;
-        this.caloriesPreferenceRepo = caloriesPreferenceRepo;
-        this.propertyPreferenceRepo = propertyPreferenceRepo;
+        this.jsonPreferenceRepo = jsonPreferenceRepo;
         this.userPreferencesRepo = userPreferencesRepo;
         this.supermarketUserRepo = supermarketUserRepo;
     }
 
-    public void addCaloriesPreference(int minC, int maxC, SupermarketUser supermarketUser) {
-        CaloriesPreference preference =  caloriesPreferenceRepo.save(new CaloriesPreference(minC, maxC));
+    public void addCaloriesPreference(int minC, int maxC, SupermarketUser supermarketUser) throws JsonProcessingException {
+        CaloriesPreference preference =  new CaloriesPreference(minC, maxC);
+        jsonPreferenceRepo.save(new JSONPreference(preference.getId(), preference));
         addPreference(preference, supermarketUser);
     }
 
@@ -52,8 +48,8 @@ public class PreferencesService {
         userPreferencesRepo.save(supermarketUser.getUserPreferences());
     }
 
-    public void deletePreference(Long preference_id, SupermarketUser supermarketUser) {
-        supermarketUser.getUserPreferences().getPreferences().remove(caloriesPreferenceRepo.findById(preference_id).get());
+    public void deletePreference(String preference_id, SupermarketUser supermarketUser) throws IOException {
+        supermarketUser.getUserPreferences().getPreferences().remove(jsonPreferenceRepo.findById(preference_id).get().getPreference());
         userPreferencesRepo.save(supermarketUser.getUserPreferences());
     }
 

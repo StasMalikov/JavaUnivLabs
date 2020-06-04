@@ -1,5 +1,6 @@
 package com.supermarket.domain.preferences;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.supermarket.domain.ProductPreferences;
 import com.supermarket.domain.UserPreferences;
 import lombok.Data;
@@ -9,17 +10,20 @@ import java.util.List;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Preference {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "preference_id")
-    private Long id;
+    @JsonProperty("id")
+    protected String id;
 
+    @JsonProperty("preferenceType")
+    protected String preferenceType;
+
+    @JsonProperty("userPreferences")
     @ManyToMany(mappedBy = "preferences", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserPreferences> userPreferences;
 
+    @JsonProperty("preferencesProduct")
     @ManyToMany(mappedBy = "preferencesProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductPreferences> productPreferences;
 }

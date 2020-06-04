@@ -1,16 +1,16 @@
 package com.supermarket.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supermarket.domain.*;
 import com.supermarket.domain.enums.ProdType;
 import com.supermarket.domain.enums.Role;
 import com.supermarket.domain.enums.WeightType;
 import com.supermarket.domain.preferences.AlcoholPreference;
 import com.supermarket.domain.preferences.CaloriesPreference;
+import com.supermarket.domain.preferences.JSONPreference;
 import com.supermarket.domain.preferences.PropertyPreference;
 import com.supermarket.repos.*;
-import com.supermarket.repos.preferences.AlcoholPreferenceRepo;
-import com.supermarket.repos.preferences.CaloriesPreferenceRepo;
-import com.supermarket.repos.preferences.PropertyPreferenceRepo;
+import com.supermarket.repos.preferences.JSONPreferenceRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -22,29 +22,24 @@ import java.util.*;
 public class DbInitializer implements CommandLineRunner {
 
     private IngredientRepo ingredientRepo;
-    private AlcoholPreferenceRepo alcoholPreferenceRepo;
-    private CaloriesPreferenceRepo caloriesPreferenceRepo;
-    private PropertyPreferenceRepo propertyPreferenceRepo;
     private ProductRepo productRepo;
     private PriceRepo priceRepo;
     private SupermarketUserSevice supermarketUserSevice;
+    private JSONPreferenceRepo jsonPreferenceRepo;
     // not used
     private BasketRepo basketRepo;
     private ProductBasketRepo productBasketRepo;
     private ProductPreferencesRepo productPreferencesRepo;
     private UserPreferencesRepo userPreferencesRepo;
 
-    public DbInitializer(IngredientRepo ingredientRepo, AlcoholPreferenceRepo alcoholPreferenceRepo,
-                         CaloriesPreferenceRepo caloriesPreferenceRepo, PropertyPreferenceRepo propertyPreferenceRepo,
+    public DbInitializer(JSONPreferenceRepo jsonPreferenceRepo, IngredientRepo ingredientRepo,
                          ProductRepo productRepo,
                          PriceRepo priceRepo, BasketRepo basketRepo, ProductBasketRepo productBasketRepo,
                          ProductPreferencesRepo productPreferencesRepo, UserPreferencesRepo userPreferencesRepo,
                          SupermarketUserSevice supermarketUserSevice){
 
+        this.jsonPreferenceRepo = jsonPreferenceRepo;
         this.ingredientRepo = ingredientRepo;
-        this.alcoholPreferenceRepo = alcoholPreferenceRepo;
-        this.caloriesPreferenceRepo = caloriesPreferenceRepo;
-        this.propertyPreferenceRepo = propertyPreferenceRepo;
         this.productRepo = productRepo;
         this.priceRepo = priceRepo;
         this.supermarketUserSevice = supermarketUserSevice;
@@ -94,11 +89,6 @@ public class DbInitializer implements CommandLineRunner {
         }
         productRepo.deleteAll();
 
-        caloriesPreferenceRepo.deleteAll();
-        alcoholPreferenceRepo.deleteAll();
-        propertyPreferenceRepo.deleteAll();
-
-
         ingredientRepo.deleteAll();
         supermarketUserSevice.deleteAll();
     }
@@ -128,7 +118,7 @@ public class DbInitializer implements CommandLineRunner {
         i1.add(ingredientRepo.findByName("Соль"));
         i1.add(ingredientRepo.findByName("Куриное яйцо"));
         productRepo.save( new Product("Хлеб",5, 120, c1,
-                WeightType.KILOGRAM, ProdType.BREAD, i1, priceRepo.findByPrice(30)));
+                WeightType.KILOGRAM, ProdType.BREAD, i1, priceRepo.findByPrice(30), WeightType.KILOGRAM.getMinValue()));
 
         Set<Ingredient> i2 = new HashSet<>();
         i2.add(ingredientRepo.findByName("Огурцы"));
@@ -136,7 +126,7 @@ public class DbInitializer implements CommandLineRunner {
         i2.add(ingredientRepo.findByName("Соль"));
         i2.add(ingredientRepo.findByName("Масло оливковое"));
         productRepo.save( new Product("Салат овощной",3, 24, c1,
-                WeightType.KILOGRAM, ProdType.VEGETABLES, i2, priceRepo.findByPrice(150)));
+                WeightType.KILOGRAM, ProdType.VEGETABLES, i2, priceRepo.findByPrice(150), WeightType.KILOGRAM.getMinValue()));
 
         Set<Ingredient> i3 = new HashSet<>();
         i3.add(ingredientRepo.findByName("Сахар"));
@@ -144,25 +134,25 @@ public class DbInitializer implements CommandLineRunner {
         i3.add(ingredientRepo.findByName("Куриное яйцо"));
         i3.add(ingredientRepo.findByName("Шоколад"));
         productRepo.save( new Product("Булочка с шоколадом",7, 30, c1,
-                WeightType.PIECE, ProdType.BREAD, i3, priceRepo.findByPrice(45)));
+                WeightType.PIECE, ProdType.BREAD, i3, priceRepo.findByPrice(45), WeightType.PIECE.getMinValue()));
 
         Set<Ingredient> i4 = new HashSet<>();
         i4.add(ingredientRepo.findByName("Вода"));
         i4.add(ingredientRepo.findByName("Висковые зерновые десциляторы"));
         productRepo.save( new Product("Виски Джим Бим",2, 500, c1,
-                WeightType.PIECE, ProdType.ALCOHOL, i4, priceRepo.findByPrice(400)));
+                WeightType.PIECE, ProdType.ALCOHOL, i4, priceRepo.findByPrice(400), WeightType.PIECE.getMinValue()));
 
         Set<Ingredient> i5 = new HashSet<>();
         i5.add(ingredientRepo.findByName("Вода"));
         productRepo.save( new Product("Вода Архыз питьевая столовая газ",10, 1000, c1,
-                WeightType.PIECE, ProdType.SOFTDRINK, i5, priceRepo.findByPrice(35)));
+                WeightType.PIECE, ProdType.SOFTDRINK, i5, priceRepo.findByPrice(35), WeightType.PIECE.getMinValue()));
 
         Set<Ingredient> i6 = new HashSet<>();
         i6.add(ingredientRepo.findByName("Свинина жирная"));
         i6.add(ingredientRepo.findByName("Куриное яйцо"));
         i6.add(ingredientRepo.findByName("Мука"));
         productRepo.save( new Product("Отбивная из свинины",3, 24, c1,
-                WeightType.KILOGRAM, ProdType.MEAT, i6, priceRepo.findByPrice(450)));
+                WeightType.KILOGRAM, ProdType.MEAT, i6, priceRepo.findByPrice(450), WeightType.KILOGRAM.getMinValue()));
     }
 
     public void initPrice() {
@@ -187,7 +177,7 @@ public class DbInitializer implements CommandLineRunner {
         supermarketUserSevice.registerAdmin(admin);
     }
 
-    public void initPreferences(){
+    public void initPreferences() throws JsonProcessingException {
 
 //        caloriesPreferenceRepo.save(new CaloriesPreference(0, 2000));
 //        caloriesPreferenceRepo.save(new CaloriesPreference(3000, 0));
@@ -196,7 +186,8 @@ public class DbInitializer implements CommandLineRunner {
 //        alcoholPreferenceRepo.save(new AlcoholPreference(40,300));
 //        alcoholPreferenceRepo.save(new AlcoholPreference(10,750));
 
-        propertyPreferenceRepo.save(new PropertyPreference("muslim religion"));
+        PropertyPreference p1 = new PropertyPreference("muslim religion");
+        jsonPreferenceRepo.save(new JSONPreference(p1.getId(), p1));
     }
 
     public void initIngredients(){

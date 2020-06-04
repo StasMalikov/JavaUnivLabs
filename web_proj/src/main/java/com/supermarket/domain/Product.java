@@ -53,6 +53,11 @@ public class Product {
      */
     private double quantity;
 
+    /**
+     *  одна порция продукта.
+     */
+    private double quantityStep;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="price_id", nullable=false)
     private Price price;
@@ -75,7 +80,7 @@ public class Product {
     }
 
     public Product(String name, double quantity, Integer expirationDate, Calendar productionDate,
-                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients, Price price) {
+                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients, Price price, double quantityStep) {
         id = UUID.randomUUID().toString();
         this.name = name;
         this.expirationDate = expirationDate;
@@ -85,10 +90,12 @@ public class Product {
         this.ingredients = ingredients;
         this.price = price;
         this.quantity = quantity;
+        this.quantityStep = quantityStep;
     }
 
     public Product(String name, double quantity, Integer expirationDate, Calendar productionDate,
-                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients, Price price, ProductPreferences preferences) {
+                   WeightType weightType, ProdType prodType, Set<Ingredient> ingredients,
+                   Price price, ProductPreferences preferences, double quantityStep) {
         id = UUID.randomUUID().toString();
         this.name = name;
         this.expirationDate = expirationDate;
@@ -99,6 +106,7 @@ public class Product {
         this.price = price;
         this.productPreferences = preferences;
         this.quantity = quantity;
+        this.quantityStep = quantityStep;
     }
 
     public String getId() {
@@ -127,6 +135,22 @@ public class Product {
 
     public WeightType getWeightType() {
         return weightType;
+    }
+
+    public double getQuantityStep() {
+        return quantityStep;
+    }
+
+    public void setQuantityStep(double quantityStep) {
+        this.quantityStep = quantityStep;
+    }
+
+    public ProductPreferences getProductPreferences() {
+        return productPreferences;
+    }
+
+    public void setProductPreferences(ProductPreferences productPreferences) {
+        this.productPreferences = productPreferences;
     }
 
     public void setWeightType(WeightType weightType) {

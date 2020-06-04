@@ -1,5 +1,6 @@
 package com.supermarket.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supermarket.domain.SupermarketUser;
 import com.supermarket.domain.preferences.CaloriesPreference;
 import com.supermarket.domain.preferences.Preference;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +41,8 @@ public class PreferencesController {
     }
 
     @PostMapping("/delete")
-    public String delete(@AuthenticationPrincipal SupermarketUser user, String preference_id, Map<String, Object> model){
-        preferencesService.deletePreference(Long.valueOf(preference_id), user);
+    public String delete(@AuthenticationPrincipal SupermarketUser user, String preference_id, Map<String, Object> model) throws IOException {
+        preferencesService.deletePreference(preference_id, user);
         List<Preference> preferences = preferencesService.getPreferences(user);
         if(preferences.size() == 0) {
             model.put("messageNoPreferences", ".");
@@ -55,7 +58,7 @@ public class PreferencesController {
     @PostMapping("/add_calories")
     public String addCalories(@AuthenticationPrincipal SupermarketUser user,
                               @RequestParam String min, @RequestParam String max,
-                              Map<String, Object> model){
+                              Map<String, Object> model) throws JsonProcessingException {
         if("".equals(max) && "".equals(min)){
             model.put("messageBadCalories", ".");
         }else{
